@@ -1,0 +1,13 @@
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\DiceCalculator\bin\Release\netcoreapp3.1\DiceAverage.exe
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\DiceCalculator\bin\Release\netcoreapp3.1\DiceAverage.deps.json
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\DiceCalculator\bin\Release\netcoreapp3.1\DiceAverage.runtimeconfig.json
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\DiceCalculator\bin\Release\netcoreapp3.1\DiceAverage.runtimeconfig.dev.json
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\DiceCalculator\bin\Release\netcoreapp3.1\DiceAverage.dll
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\DiceCalculator\bin\Release\netcoreapp3.1\DiceAverage.pdb
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\DiceCalculator\obj\Release\netcoreapp3.1\DiceAverage.csprojAssemblyReference.cache
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\DiceCalculator\obj\Release\netcoreapp3.1\DiceAverage.AssemblyInfoInputs.cache
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\DiceCalculator\obj\Release\netcoreapp3.1\DiceAverage.AssemblyInfo.cs
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\DiceCalculator\obj\Release\netcoreapp3.1\DiceAverage.csproj.CoreCompileInputs.cache
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\DiceCalculator\obj\Release\netcoreapp3.1\DiceAverage.dll
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\DiceCalculator\obj\Release\netcoreapp3.1\DiceAverage.pdb
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\DiceCalculator\obj\Release\netcoreapp3.1\DiceAverage.genruntimeconfig.cache
