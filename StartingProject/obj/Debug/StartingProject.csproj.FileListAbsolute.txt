@@ -1,7 +1,0 @@
-C:\Users\miki4\Documents\GitHub\StartingProject\StartingProject\bin\Debug\StartingProject.exe.config
-C:\Users\miki4\Documents\GitHub\StartingProject\StartingProject\bin\Debug\StartingProject.exe
-C:\Users\miki4\Documents\GitHub\StartingProject\StartingProject\bin\Debug\StartingProject.pdb
-C:\Users\miki4\Documents\GitHub\StartingProject\StartingProject\obj\Debug\StartingProject.csprojAssemblyReference.cache
-C:\Users\miki4\Documents\GitHub\StartingProject\StartingProject\obj\Debug\StartingProject.csproj.CoreCompileInputs.cache
-C:\Users\miki4\Documents\GitHub\StartingProject\StartingProject\obj\Debug\StartingProject.exe
-C:\Users\miki4\Documents\GitHub\StartingProject\StartingProject\obj\Debug\StartingProject.pdb
