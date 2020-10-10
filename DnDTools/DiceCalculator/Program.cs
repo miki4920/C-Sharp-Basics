@@ -2,11 +2,12 @@
 
 
 namespace DungeonProgram
-{ 
+{
     class Program
     {
         static void Main()
-        {   while (true)
+        {
+            while (true)
             {
                 DiceAverageCalculator calculator = new DiceAverageCalculator();
                 Console.WriteLine("Please Insert dice equation: ");
@@ -23,9 +24,10 @@ namespace DungeonProgram
             int dieCount = Convert.ToInt32(dieElements[0]);
             int dieValue = Convert.ToInt32(dieElements[1]);
             return dieCount * ((1 + dieValue) / 2.0);
-            
+
         }
-        public double CalculateAverage(string[] diceInput) {
+        public double CalculateAverage(string[] diceInput)
+        {
             double totalValue = 0;
             int converter;
             foreach (string die in diceInput)

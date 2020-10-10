@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "Wy8b4WfjR+9xIKRAxZR07HZJ9IsZpCyxoG79GjA/TARTjrBDWpNNNfk064AzAFW73/Gw7O7nvRQGbr8tTNGpuQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\miki4\\Documents\\GitHub\\CSharpProjects\\DnDTools\\BusinessRolls\\BusinessRolls.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\miki4\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x86\\3.1.8\\microsoft.netcore.app.runtime.win-x86.3.1.8.nupkg.sha512",
+    "C:\\Users\\miki4\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x86\\3.1.8\\microsoft.windowsdesktop.app.runtime.win-x86.3.1.8.nupkg.sha512",
+    "C:\\Users\\miki4\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x86\\3.1.8\\microsoft.aspnetcore.app.runtime.win-x86.3.1.8.nupkg.sha512"
+  ],
+  "logs": []
+}

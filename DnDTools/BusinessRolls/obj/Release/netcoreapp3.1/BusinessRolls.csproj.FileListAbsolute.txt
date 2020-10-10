@@ -1,0 +1,13 @@
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\BusinessRolls\bin\Release\netcoreapp3.1\BusinessRolls.exe
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\BusinessRolls\bin\Release\netcoreapp3.1\BusinessRolls.deps.json
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\BusinessRolls\bin\Release\netcoreapp3.1\BusinessRolls.runtimeconfig.json
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\BusinessRolls\bin\Release\netcoreapp3.1\BusinessRolls.runtimeconfig.dev.json
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\BusinessRolls\bin\Release\netcoreapp3.1\BusinessRolls.dll
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\BusinessRolls\bin\Release\netcoreapp3.1\BusinessRolls.pdb
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\BusinessRolls\obj\Release\netcoreapp3.1\BusinessRolls.csprojAssemblyReference.cache
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\BusinessRolls\obj\Release\netcoreapp3.1\BusinessRolls.AssemblyInfoInputs.cache
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\BusinessRolls\obj\Release\netcoreapp3.1\BusinessRolls.AssemblyInfo.cs
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\BusinessRolls\obj\Release\netcoreapp3.1\BusinessRolls.csproj.CoreCompileInputs.cache
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\BusinessRolls\obj\Release\netcoreapp3.1\BusinessRolls.dll
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\BusinessRolls\obj\Release\netcoreapp3.1\BusinessRolls.pdb
+C:\Users\miki4\Documents\GitHub\CSharpProjects\DnDTools\BusinessRolls\obj\Release\netcoreapp3.1\BusinessRolls.genruntimeconfig.cache
