@@ -13,13 +13,19 @@ namespace BusinessRolls
             int numberOfRolls;
             while (true)
             {
-                Console.WriteLine("Enter value of your business: ");
-                value = Convert.ToInt32(Console.ReadLine()); 
-                Console.WriteLine("Enter your bonus: ");
-                bonus = Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine("Enter number of rolls: ");
-                numberOfRolls = Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine("Your total profit: {0}", calculator.CalculateBusiness(value, bonus, numberOfRolls));
+                try
+                {
+                    Console.WriteLine("Enter value of your business: ");
+                    value = Convert.ToInt32(Console.ReadLine());
+                    Console.WriteLine("Enter your bonus: ");
+                    bonus = Convert.ToInt32(Console.ReadLine());
+                    Console.WriteLine("Enter number of rolls: ");
+                    numberOfRolls = Convert.ToInt32(Console.ReadLine());
+                    Console.WriteLine("Your total profit: {0}", calculator.CalculateBusiness(value, bonus, numberOfRolls));
+                }
+                catch (System.FormatException) {
+                    Console.WriteLine("Sorry, we only accept numbers. You will need to try again.");
+                }
             }
         }
     }
