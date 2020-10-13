@@ -3,14 +3,6 @@ namespace PerlinNoise
 {
     public class Perlin2D
     {
-
-        public int repeat;
-
-        public Perlin2D(int repeat = -1)
-        {
-            this.repeat = repeat;
-        }
-
         public double OctavePerlin(double x, double y, int octaves, double persistence)
         {
             double total = 0;
@@ -25,7 +17,7 @@ namespace PerlinNoise
 
                 amplitude *= persistence;
                 frequency *= 2;
-            }
+            }   
 
             return total / maxValue;
         }
@@ -58,12 +50,6 @@ namespace PerlinNoise
 
         public double perlin(double x, double y)
         {
-            if (repeat > 0)
-            {
-                x = x % repeat;
-                y = y % repeat;
-            }
-
             int xi = (int)x & 255;
             int yi = (int)y & 255;
             double xf = x - (int)x;
@@ -73,9 +59,9 @@ namespace PerlinNoise
 
             int aa, ab, ba, bb;
             aa = p[p[xi] + yi];
-            ab = p[p[xi] + inc(yi)];
-            ba = p[p[inc(xi)] + yi];
-            bb = p[p[inc(xi)] + inc(yi)];
+            ab = p[p[xi] + yi+1];
+            ba = p[p[xi+1] + yi];
+            bb = p[p[xi+1] + yi+1];
 
             double x1, x2, y1;
             x1 = lerp(grad(aa, xf, yf),                
@@ -86,14 +72,6 @@ namespace PerlinNoise
                           u);
             y1 = lerp(x1, x2, v);
             return (y1 + 1) / 2;                     
-        }
-
-        public int inc(int num)
-        {
-            num++;
-            if (repeat > 0) num %= repeat;
-
-            return num;
         }
 
         public static double grad(int hash, double x, double y)

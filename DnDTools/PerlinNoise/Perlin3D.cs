@@ -5,13 +5,6 @@ namespace PerlinNoise
     public class Perlin3D
     {
 
-        public int repeat;
-
-        public Perlin3D(int repeat = -1)
-        {
-            this.repeat = repeat;
-        }
-
         public double OctavePerlin(double x, double y, double z, int octaves, double persistence)
         {
             double total = 0;
@@ -59,13 +52,6 @@ namespace PerlinNoise
 
         public double perlin(double x, double y, double z)
         {
-            if (repeat > 0)
-            {                                   // If we have any repeat on, change the coordinates to their "local" repetitions
-                x = x % repeat;
-                y = y % repeat;
-                z = z % repeat;
-            }
-
             int xi = (int)x & 255;                              // Calculate the "unit cube" that the point asked will be located in
             int yi = (int)y & 255;                              // The left bound is ( |_x_|,|_y_|,|_z_| ) and the right bound is that
             int zi = (int)z & 255;                              // plus 1.  Next we calculate the location (from 0.0 to 1.0) in that cube.
@@ -78,13 +64,13 @@ namespace PerlinNoise
 
             int aaa, aba, aab, abb, baa, bba, bab, bbb;
             aaa = p[p[p[xi] + yi] + zi];
-            aba = p[p[p[xi] + inc(yi)] + zi];
-            aab = p[p[p[xi] + yi] + inc(zi)];
-            abb = p[p[p[xi] + inc(yi)] + inc(zi)];
-            baa = p[p[p[inc(xi)] + yi] + zi];
-            bba = p[p[p[inc(xi)] + inc(yi)] + zi];
-            bab = p[p[p[inc(xi)] + yi] + inc(zi)];
-            bbb = p[p[p[inc(xi)] + inc(yi)] + inc(zi)];
+            aba = p[p[p[xi] + yi+1] + zi];
+            aab = p[p[p[xi] + yi] + zi+1];
+            abb = p[p[p[xi] + yi+1] + zi+1];
+            baa = p[p[p[xi+1] + yi] + zi];
+            bba = p[p[p[xi+1] + yi+1] + zi];
+            bab = p[p[p[xi+1] + yi] + zi+1];
+            bbb = p[p[p[xi+1] + yi+1] + zi+1];
 
             double x1, x2, y1, y2;
             x1 = lerp(grad(aaa, xf, yf, zf),                // The gradient function calculates the dot product between a pseudorandom
@@ -105,15 +91,6 @@ namespace PerlinNoise
 
             return (lerp(y1, y2, w) + 1) / 2;                       // For convenience we bound it to 0 - 1 (theoretical min/max before is -1 - 1)
         }
-
-        public int inc(int num)
-        {
-            num++;
-            if (repeat > 0) num %= repeat;
-
-            return num;
-        }
-
         public static double grad(int hash, double x, double y, double z)
         {
             switch (hash & 0xF)
