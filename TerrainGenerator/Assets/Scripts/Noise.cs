@@ -21,7 +21,6 @@ public static class Noise
         Vector2[] octaveOffsets = new Vector2[octaves];
 
         float amplitude = 1;
-        float frequency = 1;
 
         float maxPossibleHeight= 0;
 
@@ -38,13 +37,13 @@ public static class Noise
             for (int x = 0; x < mapWidth; x++)
             {
                 float noiseHeight = 0;
+                float frequency = 1;
                 amplitude = 1;
-                frequency = 1;
                 for (int i = 0; i < octaves; i++)
                 {
                     sampleX = (x-halfWidth + octaveOffsets[i].x)  / scale * frequency;
                     sampleY = (y-halfHeight + octaveOffsets[i].y) / scale * frequency;
-                    noisePoint = noiseGenerator.GetPerlinPoint(sampleX, sampleY);
+                    noisePoint = noiseGenerator.GetPerlinPoint(sampleX, sampleY) * 2 - 1;
                     noiseHeight += noisePoint * amplitude;
                     amplitude *= persistance;
                     frequency *= lacunarity;
@@ -71,7 +70,7 @@ public static class Noise
                 }
                 else
                 {
-                    float normalisedHeight = (noiseMap[x, y] - 0.5f) / (2f*maxPossibleHeight/3.5f);
+                    float normalisedHeight = (noiseMap[x, y]+0.78f) / (maxPossibleHeight * 1.08f);
                     noiseMap[x, y] = normalisedHeight;
                 }
             }
@@ -117,7 +116,7 @@ public static class Noise
                           u);
             y1 = Lerp(x1, x2, v);
 
-            return (y1 + 1) / 2;
+            return (y1+1) / 2f;
         }
 
         public int inc(int num)
@@ -128,16 +127,12 @@ public static class Noise
 
         public static float Gradient(int hash, float x, float y)
         {
-            switch (hash & 7)
+            switch (hash & 3)
             {
                 case 0x0: return x + y;
                 case 0x1: return -x + y;
                 case 0x2: return x - y;
                 case 0x3: return -x - y;
-                case 0x4: return y + x;
-                case 0x5: return y - x;
-                case 0x6: return -y - x;
-                case 0x7: return -y - x;
                 default: return 0;
             }
         }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class MapGenerator : MonoBehaviour
 {
-    public enum DrawMode {NoiseMap, ColourMap, Mesh};
+    public enum DrawMode {NoiseMap, ColourMap, Mesh, FallOffMap};
     public DrawMode drawMode;
     public Noise.NormaliseMode normaliseMode;
     public const int chunkMapSize = 241;
@@ -19,12 +19,17 @@ public class MapGenerator : MonoBehaviour
     public int seed;
     public float meshHeightMultiplier;
     public AnimationCurve meshHeightCurve;
+    public bool useFallOff;
     public bool autoUpdate;
     public Vector2 offset;
     public TerrainType[] regions;
+    float[,] falloffMap;
     Queue<MapThreadInfo<MapData>> mapDataThreadInfoQueue = new Queue<MapThreadInfo<MapData>>();
     Queue<MapThreadInfo<MeshData>> meshDataThreadInfoQueue = new Queue<MapThreadInfo<MeshData>>();
-
+    private void Awake()
+    {
+        falloffMap = FallOffMap.GenerateFallOffMap(chunkMapSize);
+    }
     public void DrawMapInEditor()
     {
         MapData mapData = GenerateMapData(Vector2.zero);
@@ -40,6 +45,10 @@ public class MapGenerator : MonoBehaviour
         else if (drawMode == DrawMode.Mesh)
         {
             display.DrawMesh(MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve, previewLOD), TextureGenerator.TextureFromColourMap(mapData.colorMap, chunkMapSize, chunkMapSize));
+        }
+        else if(drawMode == DrawMode.FallOffMap)
+        {
+            display.DrawTexture(TextureGenerator.TextureFromHeightMap(FallOffMap.GenerateFallOffMap(chunkMapSize)));
         }
     }
     public void RequestMapData(Vector2 centre, Action<MapData> callback)
@@ -110,6 +119,10 @@ public class MapGenerator : MonoBehaviour
         {
             for(int x=0; x<chunkMapSize; x++)
             {
+                if(useFallOff)
+                {
+                    noiseMap[x, y] = Mathf.Clamp(noiseMap[x, y] - falloffMap[x, y], 0f , 1f);
+                }
                 float currentHeight = noiseMap[x, y];
                 for(int i =0; i<regions.Length; i++)
                 {
@@ -147,6 +160,7 @@ public class MapGenerator : MonoBehaviour
         {
             lacunarity = 0.01f;
         }
+        falloffMap = FallOffMap.GenerateFallOffMap(chunkMapSize);
     }
 
     struct MapThreadInfo<T>
