@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.Linq;
 
 namespace PerlinNoise
 {
@@ -6,19 +8,20 @@ namespace PerlinNoise
     {
         static void Main(string[] args)
         {
-            PerlinNoise.Perlin2D noiseGenerator = new PerlinNoise.Perlin2D();
-            int noisePoint = 0;
+            PerlinNoise.Perlin2D noiseGenerator = new PerlinNoise.Perlin2D(150);
             int size = 1024;
-            double xInput;
-            double yInput;
+            int noisePoint = 0;
+            float xInput;
+            float yInput;
             Bitmap noise = new Bitmap(size, size);
+
             for (int x = 0; x < size; x++)
             {
                 for (int y = 0; y < size; y++)
                 {
-                    xInput = x * 1.0 / size;
-                    yInput = y * 1.0 / size;
-                    noisePoint = (int)(noiseGenerator.OctavePerlin(xInput, yInput, 6, 1.5) * 256);
+                    xInput = x * 1.0f / size;
+                    yInput = y * 1.0f / size;
+                    noisePoint = (int)(noiseGenerator.OctavePerlin(xInput, yInput, 2, 1.5f) * 256);
                     noise.SetPixel(x, y, Color.FromArgb(noisePoint, noisePoint, noisePoint));
                 }
             }
