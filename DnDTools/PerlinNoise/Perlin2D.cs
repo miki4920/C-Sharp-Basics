@@ -1,12 +1,14 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace PerlinNoise
 {
     public class Perlin2D
     {
-        public float OctavePerlin(float x, float y, int octaves, float persistence)
+        public float OctavePerlin(float x, float y, int octaves, float persistence, float lacunarity)
         {
             float total = 0;
             float frequency = 1;
@@ -17,68 +19,75 @@ namespace PerlinNoise
                 total += GetPerlinPoint(x * frequency, y * frequency) * amplitude;
 
                 maxValue += amplitude;
-
                 amplitude *= persistence;
-                frequency *= 2;
+                frequency *= lacunarity;
             }   
             return total / maxValue;
         }
-        private static int[] p;
-
+        private static Dictionary<Vector2, Vector2> vectors;
+        private static GaussianRandom gaussianGenerator;
         public Perlin2D(int seed)
         {
-            p = new int[1024];
-            System.Random rand = new System.Random(seed);
-            for (int x = 0; x < 1024; x++)
-            {
-                p[x] = rand.Next(1, 512);
-            }
+            vectors = new Dictionary<Vector2, Vector2>();
+            gaussianGenerator = new GaussianRandom(seed);
         }
         public float GetPerlinPoint(float x, float y)
         {
             x = (float)Math.Abs(x);
             y = (float)Math.Abs(y);
-            int xi = (int)x & 255;
-            int yi = (int)y & 255;
-            float xf = x - (int)x;
-            float yf = y - (int)y;
-            float u = Fade(xf);
-            float v = Fade(yf);
+            int x0 = (int)x;
+            int x1 = x0 + 1;
+            int y0 = (int)y;
+            int y1 = y0 + 1;
 
-            int aa, ab, ba, bb;
-            aa = p[p[xi] + yi];
-            ab = p[p[xi] + inc(yi)];
-            ba = p[p[inc(xi)] + yi];
-            bb = p[p[inc(xi)] + inc(yi)];
+            float interpolationX = x - x0;
+            float interpolationY = y - y0;
 
-            float x1, x2, y1;
-            x1 = Lerp(Gradient(aa, xf, yf),
-                        Gradient(ba, xf - 1, yf),
-                        u);
-            x2 = Lerp(Gradient(ab, xf, yf - 1),
-                        Gradient(bb, xf - 1, yf - 1),
-                          u);
-            y1 = Lerp(x1, x2, v);
+            float n0, n1, ix0, ix1, value;
 
-            return (y1 + 1) / 2f;
+            n0 = DotProduct(new Vector2(x0, y0), new Vector2(x, y));
+            n1 = DotProduct(new Vector2(x1, y0), new Vector2(x, y));
+            ix0 = Lerp(n0, n1, interpolationX);
+
+            n0 = DotProduct(new Vector2(x0, y1), new Vector2(x, y));
+            n1 = DotProduct(new Vector2(x1, y1), new Vector2(x, y));
+            ix1 = Lerp(n0, n1, interpolationX);
+
+            value = Lerp(ix0, ix1, interpolationY);
+
+            return (value+2)/4;
+
         }
 
-        public int inc(int num)
+        public static Vector2 Gradient(Vector2 key)
         {
-            num++;
-            return num;
-        }
-
-        public static float Gradient(int hash, float x, float y)
-        {
-            switch (hash & 3)
+            Vector2 value = new Vector2();
+            if(vectors.TryGetValue(key, out value))
             {
-                case 0x0: return x + y;
-                case 0x1: return -x + y;
-                case 0x2: return x - y;
-                case 0x3: return -x - y;
-                default: return 0;
+                return value;
             }
+            else
+            {
+                value = GetUnitVector();
+                vectors.Add(key, value);
+                return value;
+            }
+        }
+
+        public static Vector2 GetUnitVector()
+        {
+            float x = gaussianGenerator.NextFloat(0, 1);
+            float y = gaussianGenerator.NextFloat(0, 1);
+            float magnitude = (float) Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+            return new Vector2(x / magnitude, y / magnitude);
+        }
+
+        public static float DotProduct(Vector2 u, Vector2 v)
+        {
+            Vector2 vector = Gradient(u);
+            float dx = Fade(1 - Math.Abs(v.X - u.X));
+            float dy = Fade(1 - Math.Abs(v.Y - u.Y));
+            return dx * vector.X + dy * vector.Y;
         }
 
         public static float Fade(float t)

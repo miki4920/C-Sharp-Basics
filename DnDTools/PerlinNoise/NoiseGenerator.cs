@@ -21,11 +21,12 @@ namespace PerlinNoise
                 {
                     xInput = x * 1.0f / size;
                     yInput = y * 1.0f / size;
-                    noisePoint = (int)(noiseGenerator.OctavePerlin(xInput, yInput, 2, 1.5f) * 256);
+                    noisePoint = (int)(noiseGenerator.OctavePerlin(xInput, yInput, 6, 0.5f, 2f) * 256);
                     noise.SetPixel(x, y, Color.FromArgb(noisePoint, noisePoint, noisePoint));
                 }
             }
             noise.Save("noise.bmp");
+
         }
     }
 }
