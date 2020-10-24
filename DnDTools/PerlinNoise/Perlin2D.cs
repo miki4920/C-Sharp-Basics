@@ -77,8 +77,8 @@ namespace PerlinNoise
         {
             float x = gaussianGenerator.NextFloat(0, 1);
             float y = gaussianGenerator.NextFloat(0, 1);
-            float magnitude = (float) Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
-            return new Vector2(x / magnitude, y / magnitude);
+            float magnitude = 1/(float) Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+            return new Vector2(x * magnitude, y * magnitude);
         }
 
         public static float DotProduct(Vector2 u, Vector2 v)
