@@ -11,6 +11,7 @@ namespace BusinessRolls
             int value;
             int bonus;
             int numberOfRolls;
+            Console.WriteLine((int)-0.5);
             while (true)
             {
                 try

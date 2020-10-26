@@ -48,7 +48,6 @@
     <Compile Include="GaussianRandom.cs" />
     <Compile Include="NoiseGenerator.cs" />
     <Compile Include="Perlin2D.cs" />
-    <Compile Include="Perlin3D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

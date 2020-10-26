@@ -3,7 +3,8 @@ using System;
 using System.Runtime.InteropServices;
 
 public static class Noise
-{   public enum NormaliseMode { Local, Global};
+{
+    public enum NormaliseMode { Local, Global };
     public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, float scale, int octaves, float persistance, float lacunarity, int seed, Vector2 offset, NormaliseMode normaliseMode)
     {
         float sampleX;
@@ -22,9 +23,9 @@ public static class Noise
 
         float amplitude = 1;
 
-        float maxPossibleHeight= 0;
+        float maxPossibleHeight = 0;
 
-        for (int i=0; i<octaves;i++)
+        for (int i = 0; i < octaves; i++)
         {
             float offsetX = rand.Next(-100000, 100000) + offset.x;
             float offsetY = rand.Next(-100000, 100000) - offset.y;
@@ -41,8 +42,8 @@ public static class Noise
                 amplitude = 1;
                 for (int i = 0; i < octaves; i++)
                 {
-                    sampleX = (x-halfWidth + octaveOffsets[i].x)  / scale * frequency;
-                    sampleY = (y-halfHeight + octaveOffsets[i].y) / scale * frequency;
+                    sampleX = (x - halfWidth + octaveOffsets[i].x) / scale * frequency;
+                    sampleY = (y - halfHeight + octaveOffsets[i].y) / scale * frequency;
                     noisePoint = noiseGenerator.GetPerlinPoint(sampleX, sampleY) * 2 - 1;
                     noiseHeight += noisePoint * amplitude;
                     amplitude *= persistance;
@@ -64,13 +65,13 @@ public static class Noise
         {
             for (int x = 0; x < mapWidth; x++)
             {
-                if(normaliseMode == NormaliseMode.Local)
+                if (normaliseMode == NormaliseMode.Local)
                 {
                     noiseMap[x, y] = Mathf.InverseLerp(minLocalNoiseHeight, maxLocalNoiseHeight, noiseMap[x, y]);
                 }
                 else
                 {
-                    float normalisedHeight = (noiseMap[x, y]+0.78f) / (maxPossibleHeight * 1.08f);
+                    float normalisedHeight = (noiseMap[x, y] + 0.78f) / (maxPossibleHeight * 1.08f);
                     noiseMap[x, y] = normalisedHeight;
                 }
             }
@@ -79,70 +80,62 @@ public static class Noise
     }
     public class Perlin2D
     {
-        private static Dictionary<Vector2, Vector2> vectors;
-        private static GaussianRandom gaussianGenerator;
+        private static int[] p;
+
         public Perlin2D(int seed)
         {
-            vectors = new Dictionary<Vector2, Vector2>();
-            gaussianGenerator = new GaussianRandom(seed);
+            p = new int[1024];
+            System.Random rand = new System.Random(seed);
+            for (int x = 0; x < 1024; x++)
+            {
+                p[x] = rand.Next(1, 512);
+            }
         }
         public float GetPerlinPoint(float x, float y)
         {
             x = (float)Math.Abs(x);
             y = (float)Math.Abs(y);
-            int x0 = (int)x;
-            int x1 = x0 + 1;
-            int y0 = (int)y;
-            int y1 = y0 + 1;
+            int xi = (int)x & 255;
+            int yi = (int)y & 255;
+            float xf = x - (int)x;
+            float yf = y - (int)y;
+            float u = Fade(xf);
+            float v = Fade(yf);
 
-            float interpolationX = x - x0;
-            float interpolationY = y - y0;
+            int aa, ab, ba, bb;
+            aa = p[p[xi] + yi];
+            ab = p[p[xi] + inc(yi)];
+            ba = p[p[inc(xi)] + yi];
+            bb = p[p[inc(xi)] + inc(yi)];
 
-            float n0, n1, ix0, ix1, value;
+            float x1, x2, y1;
+            x1 = Lerp(Gradient(aa, xf, yf),
+                        Gradient(ba, xf - 1, yf),
+                        u);
+            x2 = Lerp(Gradient(ab, xf, yf - 1),
+                        Gradient(bb, xf - 1, yf - 1),
+                          u);
+            y1 = Lerp(x1, x2, v);
 
-            n0 = DotProduct(new Vector2(x0, y0), new Vector2(x, y));
-            n1 = DotProduct(new Vector2(x1, y0), new Vector2(x, y));
-            ix0 = Lerp(n0, n1, interpolationX);
-
-            n0 = DotProduct(new Vector2(x0, y1), new Vector2(x, y));
-            n1 = DotProduct(new Vector2(x1, y1), new Vector2(x, y));
-            ix1 = Lerp(n0, n1, interpolationX);
-
-            value = Lerp(ix0, ix1, interpolationY);
-
-            return (value+2)/4;
-
+            return (y1 + 1) / 2f;
         }
 
-        public static Vector2 Gradient(Vector2 key)
+        public int inc(int num)
         {
-            Vector2 value = new Vector2();
-            if(vectors.TryGetValue(key, out value))
+            num++;
+            return num;
+        }
+
+        public static float Gradient(int hash, float x, float y)
+        {
+            switch (hash & 3)
             {
-                return value;
+                case 0x0: return x + y;
+                case 0x1: return -x + y;
+                case 0x2: return x - y;
+                case 0x3: return -x - y;
+                default: return 0;
             }
-            else
-            {
-                value = GetUnitVector();
-                vectors.Add(key, value);
-                return value;
-            }
-        }
-
-        public static Vector2 GetUnitVector()
-        {
-            float x = gaussianGenerator.NextFloat(0, 1);
-            float y = gaussianGenerator.NextFloat(0, 1);
-            float magnitude = (float) Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
-            return new Vector2(x / magnitude, y / magnitude);
-        }
-
-        public static float DotProduct(Vector2 u, Vector2 v)
-        {
-            Vector2 vector = Gradient(u);
-            float dx = Fade(1 - Math.Abs(v.X - u.X));
-            float dy = Fade(1 - Math.Abs(v.Y - u.Y));
-            return dx * vector.X + dy * vector.Y;
         }
 
         public static float Fade(float t)
@@ -155,13 +148,6 @@ public static class Noise
             return a + x * (b - a);
         }
     }
-}
-
-
-
-
-
-
 }
 
 

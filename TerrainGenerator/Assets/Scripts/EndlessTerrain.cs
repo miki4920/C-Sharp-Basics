@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 
 public class EndlessTerrain : MonoBehaviour
 {
-    const float scale = 5f;
+    const float scale = 2f;
     const float viewerMoveThresholdForChunkUpdate = 25f;
     const float sqrViewerMoveThresholdForChunkUpdate = viewerMoveThresholdForChunkUpdate* viewerMoveThresholdForChunkUpdate;
     public LODInfo[] detailLevels;
@@ -77,8 +77,10 @@ public class EndlessTerrain : MonoBehaviour
         Bounds bounds;
         MeshRenderer meshRenderer;
         MeshFilter meshFilter;
+        MeshCollider meshCollider;
         LODInfo[] detailLevels;
         LevelOfDetailMesh[] lodMeshes;
+        LevelOfDetailMesh collisionLODMesh;
         MapData mapData;
         bool mapDataReceived;
         int previousLODIndex = -1;
@@ -93,6 +95,7 @@ public class EndlessTerrain : MonoBehaviour
             meshRenderer = meshObject.AddComponent<MeshRenderer>();
             meshRenderer.material = material;
             meshFilter = meshObject.AddComponent<MeshFilter>();
+            meshCollider = meshObject.AddComponent<MeshCollider>();
 
             meshObject.transform.position = positionV3 * scale;
             meshObject.transform.localScale = Vector3.one * scale;
@@ -103,6 +106,10 @@ public class EndlessTerrain : MonoBehaviour
             for(int i = 0; i <detailLevels.Length; i++)
             {
                 lodMeshes[i] = new LevelOfDetailMesh(detailLevels[i].lod, UpdateTerrainChunk);
+                if(detailLevels[i].useForCollider)
+                {
+                    collisionLODMesh = lodMeshes[i];
+                }
             }
 
             mapGenerator.RequestMapData(position, OnMapDataReceived);
@@ -151,6 +158,17 @@ public class EndlessTerrain : MonoBehaviour
                             lodMesh.RequestMesh(mapData);
                         }
                     }
+                    if(lodIndex == 0)
+                    {
+                        if(collisionLODMesh.hasMesh)
+                        {
+                            meshCollider.sharedMesh = collisionLODMesh.mesh;
+                        }
+                        else if(!collisionLODMesh.hasRequestedMesh)
+                        {
+                            collisionLODMesh.RequestMesh(mapData);
+                        }
+                    }
                     terrainChunksVisibleLastUpdate.Add(this);
                 }
             }
@@ -196,5 +214,6 @@ public class EndlessTerrain : MonoBehaviour
     {
         public int lod;
         public float visibleDistanceThreshold;
+        public bool useForCollider;
     }
 }
