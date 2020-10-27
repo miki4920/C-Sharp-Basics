@@ -44,7 +44,7 @@ public static class Noise
                 {
                     sampleX = (x - halfWidth + octaveOffsets[i].x) / scale * frequency;
                     sampleY = (y - halfHeight + octaveOffsets[i].y) / scale * frequency;
-                    noisePoint = noiseGenerator.GetPerlinPoint(sampleX, sampleY) * 2 - 1;
+                    noisePoint = noiseGenerator.GetPerlinPoint(sampleX, sampleY);
                     noiseHeight += noisePoint * amplitude;
                     amplitude *= persistance;
                     frequency *= lacunarity;
@@ -71,7 +71,7 @@ public static class Noise
                 }
                 else
                 {
-                    float normalisedHeight = (noiseMap[x, y] + 0.78f) / (maxPossibleHeight * 1.08f);
+                    float normalisedHeight = (noiseMap[x, y]) / (maxPossibleHeight * 1.2f);
                     noiseMap[x, y] = normalisedHeight;
                 }
             }
@@ -84,11 +84,11 @@ public static class Noise
 
         public Perlin2D(int seed)
         {
-            p = new int[1024];
+            p = new int[512];
             System.Random rand = new System.Random(seed);
-            for (int x = 0; x < 1024; x++)
+            for (int x = 0; x < 512; x++)
             {
-                p[x] = rand.Next(1, 512);
+                p[x] = rand.Next(1, 256);
             }
         }
         public float GetPerlinPoint(float x, float y)
