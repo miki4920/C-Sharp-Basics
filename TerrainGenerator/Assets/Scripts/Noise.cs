@@ -4,8 +4,8 @@ using System.Runtime.InteropServices;
 
 public static class Noise
 {
-    public enum NormaliseMode { Local, Global };
-    public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, float scale, int octaves, float persistance, float lacunarity, int seed, Vector2 offset, NormaliseMode normaliseMode)
+    public enum NormalizeMode { Local, Global };
+    public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, int octaves, float persistance, float lacunarity, float scale, int seed, Vector2 offset, NormalizeMode normaliseMode)
     {
         float sampleX;
         float sampleY;
@@ -65,7 +65,7 @@ public static class Noise
         {
             for (int x = 0; x < mapWidth; x++)
             {
-                if (normaliseMode == NormaliseMode.Local)
+                if (normaliseMode == NormalizeMode.Local)
                 {
                     noiseMap[x, y] = Mathf.InverseLerp(minLocalNoiseHeight, maxLocalNoiseHeight, noiseMap[x, y]);
                 }
